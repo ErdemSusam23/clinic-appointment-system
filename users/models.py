@@ -8,3 +8,4 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    date_of_birth = models.DateField(null=True, blank=True)

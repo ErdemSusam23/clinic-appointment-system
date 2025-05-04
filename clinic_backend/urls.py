@@ -23,6 +23,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     # Your API endpoints
     path('api/', include('appointments.urls')),
+    path('api/', include('users.urls')),
     
     # Documentation URLs (works with both localhost and ngrok)
     re_path(r'^api/docs/swagger(?P<format>\.json|\.yaml)$', 
