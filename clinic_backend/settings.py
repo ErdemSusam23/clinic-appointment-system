@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-cjyeaq$^)jj=%t9o(br__y&(&hm8gta6224g=_j@^hp=(ime1r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "4551-176-233-27-121.ngrok-free.app"  
+]
 
 
 # Application definition
@@ -42,6 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'users.apps.UsersConfig',
     'rest_framework',  
+    'drf_yasg',
+    'drf_spectacular',
 ]
 
 REST_FRAMEWORK = {
@@ -51,6 +57,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
