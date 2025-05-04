@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o1^k6uz&8vkp=p^@fk0+#%g%f+rk$&*7^y0q3%lns%6$9n&dei'
+SECRET_KEY = 'django-insecure-cjyeaq$^)jj=%t9o(br__y&(&hm8gta6224g=_j@^hp=(ime1r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -54,8 +54,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]  # For React
-
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.User'  # For custom user model
 
 ROOT_URLCONF = 'clinic_backend.urls'
 
@@ -82,8 +81,12 @@ WSGI_APPLICATION = 'clinic_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Not sqlite3!
+        'NAME': 'clinic_db',
+        'USER': 'clinic_user',
+        'PASSWORD': 'seng25',  # Same one you used in CREATE USER
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
