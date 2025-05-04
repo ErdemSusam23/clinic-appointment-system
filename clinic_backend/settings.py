@@ -74,7 +74,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]  # For React
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://4551-176-233-27-121.ngrok-free.app"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "https://4551-176-233-27-121.ngrok-free.app"
+]
+
 AUTH_USER_MODEL = 'users.User'  # For custom user model
 
 ROOT_URLCONF = 'clinic_backend.urls'
