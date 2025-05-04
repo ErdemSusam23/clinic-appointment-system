@@ -9,7 +9,7 @@ class User(AbstractUser):
     )
     
     # Remove email field
-    email = None
+    email = models.EmailField(unique=True)
     
     # Make first_name and last_name required
     first_name = models.CharField(max_length=150)
