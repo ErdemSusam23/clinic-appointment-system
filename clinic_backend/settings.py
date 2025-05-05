@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "4551-176-233-27-121.ngrok-free.app"  
+    "e031-176-233-27-121.ngrok-free.app"  
 ]
 
 
@@ -74,14 +74,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://4551-176-233-27-121.ngrok-free.app"
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
-    "https://4551-176-233-27-121.ngrok-free.app"
+    "http://localhost:3000",
+    
 ]
 
 AUTH_USER_MODEL = 'users.User'  # For custom user model
@@ -163,3 +161,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 print(get_random_secret_key())
+
+

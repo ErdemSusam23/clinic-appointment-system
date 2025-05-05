@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import PatientAuthSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class TokenLoginView(APIView):
     permission_classes = [AllowAny]  # Anyone can access this endpoint
@@ -30,6 +32,7 @@ class TokenLoginView(APIView):
             return Response({"message": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class PatientAuthView(APIView):
     permission_classes = [AllowAny]  # Allow anyone to authenticate as patient
 
