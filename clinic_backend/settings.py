@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "592a-176-233-27-121.ngrok-free.app"  
+    "e031-176-233-27-121.ngrok-free.app"  
 ]
 
 
@@ -74,10 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
@@ -163,3 +160,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 print(get_random_secret_key())
+
+
