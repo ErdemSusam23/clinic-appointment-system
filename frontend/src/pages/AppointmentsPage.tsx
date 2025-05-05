@@ -1,66 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../services/api";
 
-const AppointmentsPage = () => {
-  const [centers, setCenters] = useState<string[]>(["Ankara Şehir", "İstanbul Eğitim", "İzmir Devlet"]);
-  const [departments, setDepartments] = useState<string[]>(["Kardiyoloji", "Göz", "Nöroloji"]);
-  const [doctors, setDoctors] = useState<string[]>(["Dr. A", "Dr. B", "Dr. C"]);
-
-  const [search, setSearch] = useState("");
-  const [selectedCenter, setSelectedCenter] = useState("");
-  const [selectedDept, setSelectedDept] = useState("");
+function AppointmentsPage() {
+  const [departments, setDepartments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
 
+  useEffect(() => {
+    // Bölüm listesini API'den al
+    api.get("/departments/")
+      .then(res => setDepartments(res.data))
+      .catch(err => console.error("Bölümler alınamadı:", err));
+  }, []);
+
+  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const deptId = e.target.value;
+    setSelectedDepartment(deptId);
+    setSelectedDoctor("");
+
+    // Seçilen bölüme göre doktorları getir
+    api.get(`/departments/${deptId}/doctors/`)
+      .then(res => setDoctors(res.data))
+      .catch(err => console.error("Doktorlar alınamadı:", err));
+  };
+
+  const handleAppointment = () => {
+    if (!selectedDoctor) {
+      alert("Lütfen doktor seçin.");
+      return;
+    }
+
+    alert(`Randevu alındı: Doktor ID ${selectedDoctor}`);
+    // İsteğe bağlı: POST ile randevu gönderilebilir
+  };
+
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <p className="font-semibold mb-2">Birim veya Doktor ismi ile arama yapabilirsiniz.</p>
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="border w-full p-2 rounded mb-4"
-        placeholder="Birim veya Doktor"
-      />
+    <div>
+      <h2>Randevu Sayfası</h2>
 
-      <p className="font-semibold mb-2">Randevu almak istediğiniz hastane, bölüm ve doktor seçimini yapınız.</p>
-
-      <select
-        className="w-full border p-2 rounded mb-2"
-        value={selectedCenter}
-        onChange={(e) => setSelectedCenter(e.target.value)}
-      >
-        <option value="">Merkez:</option>
-        {centers.map((c, i) => (
-          <option key={i} value={c}>{c}</option>
+      <label>Bölüm:</label>
+      <select value={selectedDepartment} onChange={handleDepartmentChange}>
+        <option value="">Seçiniz</option>
+        {departments.map((dept: any) => (
+          <option key={dept.id} value={dept.id}>{dept.name}</option>
         ))}
       </select>
 
-      <div className="flex items-center gap-2 mb-2">
-        <select
-          className="w-full border p-2 rounded"
-          value={selectedDept}
-          onChange={(e) => setSelectedDept(e.target.value)}
-        >
-          <option value="">Bölüm:</option>
-          {departments.map((d, i) => (
-            <option key={i} value={d}>{d}</option>
-          ))}
-        </select>
-        <button className="p-2 text-blue-500">🔍</button>
-      </div>
-
+      <label>Doktor:</label>
       <select
-        className="w-full border p-2 rounded"
         value={selectedDoctor}
         onChange={(e) => setSelectedDoctor(e.target.value)}
+        disabled={!doctors.length}
       >
-        <option value="">Birim veya Doktor:</option>
-        {doctors.map((d, i) => (
-          <option key={i} value={d}>{d}</option>
+        <option value="">Seçiniz</option>
+        {doctors.map((doc: any) => (
+          <option key={doc.id} value={doc.id}>{doc.name}</option>
         ))}
       </select>
+
+      <button onClick={handleAppointment}>Randevu Al</button>
     </div>
   );
-};
+}
 
 export default AppointmentsPage;
