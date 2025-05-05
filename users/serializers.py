@@ -20,13 +20,23 @@ class PatientAuthSerializer(serializers.Serializer):
         last_name = data.get('last_name')
         date_of_birth = data.get('date_of_birth')
 
-        try:
-            user = User.objects.get(
-                first_name=first_name,
-                last_name=last_name,
-                date_of_birth=date_of_birth,
-                role='patient'
-            )
-            return {'user': user}
-        except User.DoesNotExist:
-            raise serializers.ValidationError('Invalid credentials')
+        # First check if any patient exists with this name
+        name_matches = User.objects.filter(
+            first_name=first_name,
+            last_name=last_name,
+        )
+        
+        if not name_matches.exists():
+            raise serializers.ValidationError('No patient found with this name')
+            
+        # Then check if the patient with this name has matching DOB
+        dob_matches = name_matches.filter(date_of_birth=date_of_birth)
+        if not dob_matches.exists():
+            raise serializers.ValidationError('Date of birth does not match')
+            
+        # Finally check if this person is a patient
+        patient_matches = dob_matches.filter(role='patient')
+        if not patient_matches.exists():
+            raise serializers.ValidationError('Person found but not a patient')
+            
+        return {'user': patient_matches.first()}
