@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "4551-176-233-27-121.ngrok-free.app"  
+    "592a-176-233-27-121.ngrok-free.app"  
 ]
 
 
@@ -76,12 +76,12 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://4551-176-233-27-121.ngrok-free.app"
+    
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
-    "https://4551-176-233-27-121.ngrok-free.app"
+    
 ]
 
 AUTH_USER_MODEL = 'users.User'  # For custom user model
