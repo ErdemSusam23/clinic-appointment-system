@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import PatientAuthSerializer
 
-class LoginView(APIView):
+class TokenLoginView(APIView):
     permission_classes = [AllowAny]  # Anyone can access this endpoint
 
     def post(self, request):
@@ -15,12 +15,24 @@ class LoginView(APIView):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)  # This creates a session and sets a sessionid cookie
-            return Response({"message": "Login successful!"})
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': {
+                    'id': user.id,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'role': user.role
+                }
+            })
         else:
-            return Response({"message": "Invalid credentials"}, status=400)
+            return Response({"message": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PatientAuthView(APIView):
+    permission_classes = [AllowAny]  # Allow anyone to authenticate as patient
+
     def post(self, request):
         serializer = PatientAuthSerializer(data=request.data)
         if serializer.is_valid():
