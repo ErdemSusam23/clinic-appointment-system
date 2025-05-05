@@ -9,13 +9,28 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const res = await api.post("/auth/patient/", {
+      const payload = {
         first_name: firstName,
         last_name: lastName,
-        date_of_birth: birthDate,
-      });
+        date_of_birth: birthDate
+      };
+
+      const res = await api.post(
+        "/auth/patient/",
+        JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          date_of_birth: birthDate
+        }, null, 7), // 👈 7 boşluklu, süslü parantezli JSON
+        {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          transformRequest: [(data) => data] // 👈 String olarak gönderimi engelleme
+        }
+      );
+      
 
       const { access, refresh, user } = res.data;
       localStorage.setItem("access", access);
